@@ -1,10 +1,11 @@
 mod cli;
+mod data;
+mod error;
 mod fetch;
 
 use cli::*;
 
 use gumdrop::Options;
-use sudo::{check, RunningAs};
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -32,6 +33,7 @@ fn main() {
                         } else {
                             // lists installed
                             // requires sudo to read /var/lib/winter/status
+                            println!("{:?}", data::ensure_status_file_exists());
                         }
                     },
                     _ => {},

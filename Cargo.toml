@@ -9,7 +9,11 @@ repository = "https://github.com/jwpjrdev/winter"
 keywords = ["package-manager", "command-line-interface"]
 categories = ["command-line-interface"]
 
+[[bin]]
+name = "winter"
+path = "src/main.rs"
+
 [dependencies]
 gumdrop = "0.8.1"
 sudo = "0.6.0"
-ureq = "2.5.0"
+ureq = { version = "2.5.0", features = ["tls"] }
