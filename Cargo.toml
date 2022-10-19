@@ -1,0 +1,14 @@
+[package]
+name = "winter-pm"
+description = "lightweight, bring-your-own-CI package manager"
+authors = ["Joshua Price <jwpjr567@gmail.com>"]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/jwpjrdev/winter"
+keywords = ["package-manager", "command-line-interface"]
+categories = ["command-line-interface"]
+
+[dependencies]
+gumdrop = "0.8.1"
+sudo = "0.6.0"
