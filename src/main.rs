@@ -1,4 +1,5 @@
 mod cli;
+mod fetch;
 
 use cli::*;
 
@@ -22,7 +23,17 @@ fn main() {
                     // Command::Uninstall(opts) => {},
                     // Command::Update(opts) => {},
                     // Command::Info(opts) => {},
-                    // Command::List(opts) => {},
+                    Command::List(opts) => {
+                        if opts.remote {
+                            // lists remote
+                            let package_list = fetch::fetch_package_list().unwrap();
+                            let pretty_list = package_list.join(", ");
+                            println!("all remote packages: {}", pretty_list);
+                        } else {
+                            // lists installed
+                            // requires sudo to read /var/lib/winter/status
+                        }
+                    },
                     _ => {},
                 };
             },

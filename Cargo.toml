@@ -12,3 +12,4 @@ categories = ["command-line-interface"]
 [dependencies]
 gumdrop = "0.8.1"
 sudo = "0.6.0"
+ureq = "2.5.0"

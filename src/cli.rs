@@ -29,14 +29,14 @@ pub enum Command {
     #[options(help = "shows info for the provided package")]
     Info(InfoOpts),
     // winter list [--available] - lists all installed packages or all available packages - REQUIRES ROOT IF DISPLAYING INSTALLED
-    #[options(help = "lists all installed or available packages")]
+    #[options(help = "lists all installed or remote packages")]
     List(ListOpts),
 }
 
 #[derive(Debug, Options)]
 pub struct ListOpts {
-    #[options(help = "lists all available packages")]
-    pub available: bool,
+    #[options(help = "lists all remote packages")]
+    pub remote: bool,
 }
 
 #[derive(Debug, Options)]
