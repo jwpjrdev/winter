@@ -42,7 +42,11 @@ fn main() -> Result<(), Error> {
                         } else {
                             // lists installed
                             let packages = manager.list_packages();
-                            println!("All installed packages: {}", packages.join(", "));
+                            if packages.is_empty() {
+                                println!("There are no installed packages");
+                            } else {
+                                println!("All installed packages: {}", packages.join(", "));
+                            }
                         
                             // manager.add_package(
                             //     "example",

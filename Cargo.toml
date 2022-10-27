@@ -18,5 +18,4 @@ gumdrop = "0.8.1"
 serde = { version = "1.0.147", features = ["serde_derive"] }
 serde_json = "1.0.87"
 sudo = "0.6.0"
-toml = "0.5.9"
 ureq = { version = "2.5.0", features = ["tls"] }
