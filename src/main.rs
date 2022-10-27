@@ -5,12 +5,11 @@ mod frontend;
 use gumdrop::Options;
 
 use crate::backend::{
-    data::{PackageInfo, Package},
+    data::{Package, PackageInfo},
     manager::PackageManager,
 };
 use crate::error::Error;
 use crate::frontend::cli::*;
-
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -47,7 +46,7 @@ fn main() -> Result<(), Error> {
                             } else {
                                 println!("All installed packages: {}", packages.join(", "));
                             }
-                        
+
                             // manager.add_package(
                             //     "example",
                             //     Package {
@@ -61,11 +60,11 @@ fn main() -> Result<(), Error> {
                             // )?;
                             // manager.write_to_file()?;
                         }
-                    },
-                    _ => {},
+                    }
+                    _ => {}
                 };
-            },
-            None => {},
+            }
+            None => {}
         };
     }
 

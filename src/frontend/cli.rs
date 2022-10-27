@@ -8,7 +8,7 @@ pub struct Cli {
     pub verbose: bool,
     #[options(help = "prints version message")]
     pub version: bool,
-    
+
     #[options(command)]
     pub command: Option<Command>,
 }

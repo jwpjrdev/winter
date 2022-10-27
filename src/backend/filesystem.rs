@@ -1,18 +1,11 @@
 use std::{
-    fs::{
-        File,
-        create_dir_all,
-        read_to_string,
-    },
+    fs::{create_dir_all, read_to_string, File},
     io::Write,
     path::Path,
 };
 
 use crate::{
-    backend::{
-        data::PackagesFile,
-        utils::ensure_running_as_root,
-    },
+    backend::{data::PackagesFile, utils::ensure_running_as_root},
     error::Error,
 };
 
@@ -33,7 +26,7 @@ pub fn write_packages(packages_data: String) -> Result<(), Error> {
     if let Err(error) = ensure_running_as_root() {
         return Err(error);
     }
-    
+
     let dir = Path::new(DIR);
     let packages_file = dir.join(FILE);
     if !dir.exists() {
