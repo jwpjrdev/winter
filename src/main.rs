@@ -1,15 +1,20 @@
-mod cli;
-mod data;
+mod backend;
 mod error;
-mod fetch;
-
-use cli::*;
+mod frontend;
 
 use gumdrop::Options;
 
+use crate::backend::{
+    data::{PackageInfo, Package},
+    manager::PackageManager,
+};
+use crate::error::Error;
+use crate::frontend::cli::*;
+
+
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
-fn main() {
+fn main() -> Result<(), Error> {
     let opts = Cli::parse_args_default_or_exit();
 
     if opts.version {
@@ -19,6 +24,10 @@ fn main() {
         // println!("{:#?}", opts);
         match opts.command {
             Some(command) => {
+                let mut manager = match PackageManager::from_file() {
+                    Ok(manager) => manager,
+                    Err(error) => return Err(error),
+                };
                 match command {
                     // Command::Install(opts) => {},
                     // Command::Uninstall(opts) => {},
@@ -27,13 +36,26 @@ fn main() {
                     Command::List(opts) => {
                         if opts.remote {
                             // lists remote
-                            let package_list = fetch::fetch_package_list().unwrap();
-                            let pretty_list = package_list.join(", ");
-                            println!("all remote packages: {}", pretty_list);
+                            // let package_list = fetch::fetch_package_list().unwrap();
+                            // let pretty_list = package_list.join(", ");
+                            // println!("All remote packages: {}", pretty_list);
                         } else {
                             // lists installed
-                            // requires sudo to read /var/lib/winter/status
-                            println!("{:?}", data::ensure_status_file_exists());
+                            let packages = manager.list_packages();
+                            println!("All installed packages: {}", packages.join(", "));
+                        
+                            // manager.add_package(
+                            //     "example",
+                            //     Package {
+                            //         package_info: PackageInfo {
+                            //             name: "example".to_string(),
+                            //             status: "Ok".to_string(),
+                            //             maintainer: "Joshua Price <jwpjr567@gmail.com>".to_string(),
+                            //             version: "1.0.1".to_string(),
+                            //         }
+                            //     }
+                            // )?;
+                            // manager.write_to_file()?;
                         }
                     },
                     _ => {},
@@ -42,4 +64,6 @@ fn main() {
             None => {},
         };
     }
+
+    Ok(())
 }

@@ -1,3 +1,3 @@
 tasks:
-  - init: cargo build
-    command: cargo run -- --help
+  - init: ./scripts/build.sh
+    command: ./scripts/build.sh && sudo winter --help
