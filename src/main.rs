@@ -4,10 +4,7 @@ mod frontend;
 
 use gumdrop::Options;
 
-use crate::backend::{
-    data::{Package, PackageInfo},
-    manager::PackageManager,
-};
+use crate::backend::{data::Package, manager::PackageManager};
 use crate::error::Error;
 use crate::frontend::cli::*;
 
@@ -50,12 +47,10 @@ fn main() -> Result<(), Error> {
                             // manager.add_package(
                             //     "example",
                             //     Package {
-                            //         package_info: PackageInfo {
-                            //             name: "example".to_string(),
-                            //             status: "Ok".to_string(),
-                            //             maintainer: "Joshua Price <jwpjr567@gmail.com>".to_string(),
-                            //             version: "1.0.1".to_string(),
-                            //         }
+                            //         name: "example".to_string(),
+                            //         status: "Ok".to_string(),
+                            //         maintainer: "Joshua Price <jwpjr567@gmail.com>".to_string(),
+                            //         version: "1.0.1".to_string(),
                             //     }
                             // )?;
                             // manager.write_to_file()?;
