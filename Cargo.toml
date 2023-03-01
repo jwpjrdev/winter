@@ -1,5 +1,5 @@
 [package]
-name = "winter-pm"
+name = "winter"
 description = "lightweight, bring-your-own-CI package manager"
 authors = ["Joshua Price <jwpjr567@gmail.com>"]
 version = "0.1.0"
@@ -14,7 +14,8 @@ name = "winter"
 path = "src/main.rs"
 
 [dependencies]
-gumdrop = "0.8.1"
+clap = { version = "4.1.6", features = ["derive"] }
+is-url = "1.0.4"
 serde = { version = "1.0.147", features = ["serde_derive"] }
 serde_json = "1.0.87"
 sudo = "0.6.0"

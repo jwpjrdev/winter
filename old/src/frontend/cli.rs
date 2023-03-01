@@ -31,6 +31,15 @@ pub enum Command {
     // winter list [--available] - lists all installed packages or all available packages - REQUIRES ROOT IF DISPLAYING INSTALLED
     #[options(help = "lists all installed or remote packages")]
     List(ListOpts),
+
+    #[options(help = "")]
+    Repo()
+}
+
+#[derive(Debug, Options)]
+pub enum RepoCommand {
+    #[options(help = "")],
+    Add(RepoAddOpts),
 }
 
 #[derive(Debug, Options)]

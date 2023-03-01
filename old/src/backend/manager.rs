@@ -1,6 +1,7 @@
 use crate::backend::{
     data::{Package, PackagesFile},
     filesystem::{load_packages, write_packages},
+    remote,
 };
 use crate::error::Error;
 
@@ -23,6 +24,10 @@ impl PackageManager {
             }
             Err(error) => return Err(error),
         }
+    }
+
+    pub fn list_remote_packages() -> Result<Vec<String>, > {
+        remote::fetch_package_list()?
     }
 
     pub fn list_packages(&self) -> Vec<String> {
