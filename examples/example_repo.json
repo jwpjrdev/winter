@@ -1,0 +1,12 @@
+{
+    "id": "example",
+    "packages": {
+        "example_package": {
+            "dependencies": [
+                "curl",
+                "sh"
+            ],
+            "install": "echo 'this is an example!'"
+        }
+    }
+}
