@@ -4,20 +4,32 @@ use clap::{Parser, Subcommand};
 #[command(author, version, about, long_about = None)]
 pub struct Cli {
     #[command(subcommand)]
-    pub command: Option<Commands>,
+    pub command: Commands,
 }
 
 #[derive(Debug, Subcommand)]
 pub enum Commands {
     Repo {
         #[command(subcommand)]
-        command: Option<RepoCommands>,
+        command: RepoCommands,
     },
 }
 
+/// Manage repositories
 #[derive(Debug, Subcommand)]
 pub enum RepoCommands {
+    /// Add a remote repository
     Add {
-        repo: String
-    }
+        repo: String, // url
+        #[arg(long = "id")]
+        new_id: Option<String>,
+    },
+    /// Remove a remove repository
+    Remove {
+        repo_id: String, // id
+    },
+    /// List all remote and local repositories
+    List,
+    /// Show repository directory
+    Path,
 }
