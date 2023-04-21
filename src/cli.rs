@@ -9,27 +9,56 @@ pub struct Cli {
 
 #[derive(Debug, Subcommand)]
 pub enum Commands {
+    /// Manage repositories
     Repo {
         #[command(subcommand)]
         command: RepoCommands,
     },
+    /// Show winter directory
+    Path,
+    /// Show information for a package
+    Show {
+        /// Package id to lookup
+        package_id: String,
+    },
 }
 
-/// Manage repositories
 #[derive(Debug, Subcommand)]
 pub enum RepoCommands {
     /// Add a remote repository
     Add {
-        repo: String, // url
+        /// Remote repository URL
+        repo_url: String,
+        /// Optional new id for the repository
         #[arg(long = "id")]
         new_id: Option<String>,
+        /// Toggle printing the repository's installation path
+        #[arg(short = 'p', long = "path")]
+        show_path: bool,
     },
     /// Remove a remove repository
     Remove {
-        repo_id: String, // id
+        /// Repository id to remove
+        repo_id: String,
     },
     /// List all remote and local repositories
-    List,
+    List {
+        #[arg(short = 'p', long = "paths", action = clap::ArgAction::SetFalse)]
+        show_paths: bool,
+    },
     /// Show repository directory
     Path,
+    /// Local repository commands
+    Local {
+        #[command(subcommand)]
+        command: LocalCommands,
+    },
+}
+
+#[derive(Debug, Subcommand)]
+pub enum LocalCommands {
+    /// Create a new local repository
+    Create { repo_id: String },
+    /// View local repository information
+    Info,
 }
