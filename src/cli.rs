@@ -1,10 +1,19 @@
-use clap::{Parser, Subcommand};
+use clap::{Parser, Subcommand, ValueEnum};
 
 #[derive(Debug, Parser)]
 #[command(author, version, about, long_about = None)]
 pub struct Cli {
     #[command(subcommand)]
     pub command: Commands,
+
+    #[arg(long = "output-format", value_enum, global = true)]
+    pub output_format: Option<OutputFormat>,
+}
+#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+pub enum OutputFormat {
+    Human,
+    Json,
+    JsonLines,
 }
 
 #[derive(Debug, Subcommand)]
@@ -21,6 +30,10 @@ pub enum Commands {
         /// Package id to lookup
         package_id: String,
     },
+    /// Testing stuff
+    Test,
+    /// More testing
+    Test2,
 }
 
 #[derive(Debug, Subcommand)]

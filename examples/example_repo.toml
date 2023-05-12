@@ -2,10 +2,10 @@ id = "example"
 
 [[packages]]
 id = "example_package"
-dependencies = [ "curl", "sh" ]
+dependencies = ["curl", "sh"]
 install = "echo 'this is an example!'"
 
 [[packages]]
 id = "another_package"
-dependencies = [ "curl", "sh" ]
+dependencies = ["curl", "sh"]
 install = "echo 'this is another example!'"
