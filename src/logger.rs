@@ -8,7 +8,6 @@ pub enum OutputFormat {
     #[default]
     Human,
     Json,
-    JsonLines,
 }
 
 pub struct WinterLogger {
@@ -37,8 +36,7 @@ impl log::Log for WinterLogger {
     fn log(&self, record: &Record) {
         if self.enabled(record.metadata()) {
             if self.output_format == OutputFormat::Human {
-                let result = LogFormatter::format(record);
-                println!("{result}");
+                println!("{}", LogFormatter::format(record));
             } else {
                 use std::io::Write;
                 std::io::stdout()
@@ -68,21 +66,18 @@ impl FormattedLevel for Level {
     }
 }
 
-#[allow(unused_variables)]
 struct LogFormatter<'a> {
     result: String,
     record: Record<'a>,
 }
 
-// #[allow(dead_code)]
 impl<'a> LogFormatter<'a> {
     fn new(record: Record) -> LogFormatter {
         LogFormatter { result: String::new(), record: record }
     }
     
     pub fn format(record: &Record) -> String {
-        let record2 = record.clone();
-        let mut formatter = LogFormatter::new(record2);
+        let mut formatter = LogFormatter::new(record.clone());
         formatter.write_all();
 
         formatter.result
@@ -90,6 +85,7 @@ impl<'a> LogFormatter<'a> {
     
     fn write_all(&mut self) {
         write!(self.result, "{}: ", self.record.level().format_level()).unwrap();
+        
         if self.record.level() == Level::Trace {
             write!(self.result, "{} ", self.record.target()).unwrap();
             
