@@ -1,4 +1,4 @@
-use crate::{error::{Error as WinterError, exit_with_error}, cli::OutputFormat};
+use crate::{error::{Error as WinterError, exit_with_error}, logger::OutputFormat};
 use anyhow::Result;
 use directories::ProjectDirs;
 use serde::{Deserialize, Serialize};
@@ -26,7 +26,7 @@ pub enum RepoType {
 pub trait Repo {
     fn id(&self) -> &String;
     fn packages(&self) -> &Vec<Package>;
-    fn remote_url(&self) -> Option<&String>;
+    fn remote_url(&self) -> Option<String>;
     fn path(&self) -> &PathBuf;
     // TODO: see if this is even needed
     fn repo_type(&self) -> RepoType;
@@ -36,7 +36,7 @@ pub trait Repo {
 pub struct RemoteRepo {
     id: String,
     packages: Vec<Package>,
-    remote_url: String,
+    remote_url: Option<String>,
     path: PathBuf,
 }
 
@@ -49,8 +49,10 @@ impl Repo for RemoteRepo {
         &self.packages
     }
 
-    fn remote_url(&self) -> Option<&String> {
-        Some(&self.remote_url)
+    fn remote_url(&self) -> Option<String> {
+        // this is bad: if the url isn't set, it'll error in the unwrap
+        // let t = Some(&self.remote_url.unwrap());
+        Some(self.remote_url.clone().unwrap())
     }
 
     fn path(&self) -> &PathBuf {
@@ -70,7 +72,7 @@ impl RemoteRepo {
 
     pub fn remove_by_id(id: String) -> Result<()> {
         let repos_dir = get_remote_repos_path();
-        let path = repos_dir.join(format!("{id}.json"));
+        let path = repos_dir.join(format!("{id}.toml"));
         RemoteRepo::remove(path)?;
         Ok(())
     }
@@ -87,7 +89,7 @@ impl RemoteRepo {
         fs::create_dir_all(&repos_dir)?;
 
         // Set the remote repo's path & create it or error if it already exists
-        repo.path = repos_dir.join(format!("{}.json", repo.id));
+        repo.path = repos_dir.join(format!("{}.toml", repo.id));
         if repo.path.as_path().exists() {
             exit_with_error(WinterError::RepoExists, output_format)?;
         } else {
@@ -95,11 +97,11 @@ impl RemoteRepo {
         }
 
         // Serialise and write it to the file
-        let json_string = toml::to_string(&repo)?;
+        let toml_string = toml::to_string(&repo)?;
 
         let file = OpenOptions::new().write(true).open(&repo.path)?;
         let mut file = BufWriter::new(file);
-        file.write_all(json_string.as_bytes())?;
+        file.write_all(toml_string.as_bytes())?;
 
         // Ok((repo_path, remote_repo.id.to_string()))
 
@@ -107,7 +109,7 @@ impl RemoteRepo {
     }
 
     pub fn get(id: String) -> Result<RemoteRepo> {
-        let path = get_remote_repos_path().join(format!("{id}.json"));
+        let path = get_remote_repos_path().join(format!("{id}.toml"));
         let contents = std::fs::read_to_string(path)?;
         let repo: RemoteRepo = toml::from_str(&contents)?;
 
@@ -126,7 +128,7 @@ impl RemoteRepo {
 
         let data = ureq::get(URL).call()?.into_string()?;
         let mut remote_repo: RemoteRepo = toml::from_str(&data)?;
-        remote_repo.remote_url = repo_url;
+        remote_repo.remote_url = Some(URL.to_string()); // use repo_url
 
         Ok(remote_repo)
     }
@@ -168,7 +170,7 @@ impl Repo for LocalRepo {
         &self.packages
     }
 
-    fn remote_url(&self) -> Option<&String> {
+    fn remote_url(&self) -> Option<String> {
         None
     }
 
@@ -192,7 +194,7 @@ impl LocalRepo {
         fs::create_dir_all(&dir)?;
         
         
-        let repo_path = dir.join(format!("{}.json", id));
+        let repo_path = dir.join(format!("{}.toml", id));
         if repo_path.as_path().exists() {
             exit_with_error(WinterError::RepoExists, output_format)?;
         } else {
@@ -202,11 +204,11 @@ impl LocalRepo {
         let example_package = Package { id: "example_package".to_string(), dependencies: vec!["echo".to_string()], install: "echo 'example'".to_string() };
         let local_repo = LocalRepo::new(id, vec![example_package], repo_path);
 
-        let json_string = toml::to_string_pretty(&local_repo)?;
+        let toml_string = toml::to_string_pretty(&local_repo)?;
 
         let file = OpenOptions::new().write(true).open(&local_repo.path)?;
         let mut file = BufWriter::new(file);
-        file.write_all(json_string.as_bytes())?;
+        file.write_all(toml_string.as_bytes())?;
 
         Ok(local_repo)
     }

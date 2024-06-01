@@ -1,6 +1,6 @@
 use std::fmt;
 use anyhow::Result;
-use crate::cli::OutputFormat;
+use crate::logger::OutputFormat;
 
 #[derive(Debug)]
 pub enum Error {
@@ -22,7 +22,6 @@ impl Error {
         match format {
             OutputFormat::Human => self.message(),
             OutputFormat::Json => format!("{{\"error\": \"{}\"}}\n", self.message()),
-            OutputFormat::JsonLines => format!("{{\"error\": \"{}\"}}\n", self.message()),
         }
     }
 

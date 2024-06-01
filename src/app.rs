@@ -3,7 +3,10 @@ use is_terminal::IsTerminal;
 use log::*;
 use std::io::{BufRead, Write};
 
-use crate::prelude::*;
+use crate::logger::*;
+use crate::error::*;
+use crate::cli::*;
+use crate::repo::*;
 
 pub struct WinterApp;
 
@@ -14,16 +17,9 @@ impl WinterApp {
             None => OutputFormat::Human,
         };
     
-        WinterLogger::init(output_format, LevelFilter::max()).unwrap();
-
-        // Trace > debug > info > warn > error
-        trace!("trace");
-        debug!("debug");
-        info!("info");
-        warn!("warn");
-        error!("error");
+        // WinterLogger::init(output_format, LevelFilter::max()).unwrap();
     
-        exit_with_error(Error::InvalidURL, output_format)?;
+        // exit_with_error(Error::InvalidURL, output_format)?;
     
         match args.command {
             Commands::Test => {
@@ -35,9 +31,6 @@ impl WinterApp {
                     if let Some(format) = args.output_format {
                         match format {
                             OutputFormat::Json => {
-                                std::io::stdout().write(b"{\"error\": \"404 page not found\"}\n")?;
-                            }
-                            OutputFormat::JsonLines => {
                                 std::io::stdout().write(b"{\"error\": \"404 page not found\"}\n")?;
                             }
                             _ => {
@@ -79,6 +72,7 @@ impl WinterApp {
                         RemoteRepo::remove_by_id(repo_id)?;
                     }
                     RepoCommands::List { show_paths } => {
+                        // TODO: list local repos too. maybe in winter repo local list?
                         let remote_repos = RemoteRepo::list_all()?;
                         if remote_repos.is_empty() {
                             println!("No installed remote repositories");

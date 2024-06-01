@@ -1,4 +1,5 @@
 use clap::{Parser, Subcommand, ValueEnum};
+use crate::logger::OutputFormat;
 
 #[derive(Debug, Parser)]
 #[command(author, version, about, long_about = None)]
@@ -8,12 +9,6 @@ pub struct Cli {
 
     #[arg(long = "output-format", value_enum, global = true)]
     pub output_format: Option<OutputFormat>,
-}
-#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
-pub enum OutputFormat {
-    Human,
-    Json,
-    JsonLines,
 }
 
 #[derive(Debug, Subcommand)]
