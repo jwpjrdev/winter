@@ -3,22 +3,22 @@ name = "winter"
 description = "lightweight, bring-your-own-CI package manager"
 authors = ["Joshua Price <jwpjr567@gmail.com>"]
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 license = "MIT"
 repository = "https://github.com/jwpjrdev/winter"
 keywords = ["package-manager", "command-line-interface"]
 categories = ["command-line-interface"]
 
 [dependencies]
-anyhow = "1.0.69"
-clap = { version = "4.1.6", features = ["derive"] }
-colored = "2.0.0"
-directories = "4.0.1"
-is-terminal = "0.4.7"
+anyhow = "1.0.98"
+clap = { version = "4.5.41", features = ["derive"] }
+colored = "3.0.0"
+directories = "6.0.0"
+is-terminal = "0.4.16"
 is-url = "1.0.4"
-log = { version = "0.4.17", features = ["std"] }
-serde = { version = "1.0.147", features = ["serde_derive"] }
-serde_json = "1.0.96"
+log = { version = "0.4.27", features = ["std"] }
+serde = { version = "1.0.219", features = ["serde_derive"] }
+serde_json = "1.0.140"
 sudo = "0.6.0"
-toml = "0.7.3"
-ureq = { version = "2.5.0", features = ["tls"] }
+toml = "0.9.1"
+ureq = { version = "3.0.12", features = ["native-tls"] }

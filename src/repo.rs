@@ -126,7 +126,7 @@ impl RemoteRepo {
         const URL: &str =
             "https://raw.githubusercontent.com/jwpjrdev/winter/master/examples/example_repo.toml";
 
-        let data = ureq::get(URL).call()?.into_string()?;
+        let data = ureq::get(URL).call()?.into()?;
         let mut remote_repo: RemoteRepo = toml::from_str(&data)?;
         remote_repo.remote_url = Some(URL.to_string()); // use repo_url
 
