@@ -2,5 +2,8 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - init: ./scripts/build.sh
-    command: ./scripts/build.sh && sudo winter --help
+  - init: just build
+    command: |
+      cargo install just
+      just dev-install
+      just build && sudo winter --help
